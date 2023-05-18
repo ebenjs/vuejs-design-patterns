@@ -119,3 +119,37 @@ Le patron provide/inject est très utile dans certains cas. Mais il faut faire a
 
 # 4- Async Components
 
+Dans les applications de grande taille, il peut être nécessaire de diviser l'application en petits morceaux et de ne charger un composant du serveur que lorsqu'il est nécessaire. Pour rendre cela possible dans VueJS, nous avons la possibilité de créer des composants asynchrones.
+
+Voici ci-dessous un exemple de composant asynchrone:
+
+```javascript
+
+    import { defineAsyncComponent } from 'vue'
+
+    const AsyncComponent = defineAsyncComponent(() =>
+        import('./components/AsyncComponent.vue')
+    )
+
+```
+
+la variable `AsyncComponent` est un composant asynchrone. Elle est définie à l'aide de la fonction defineAsyncComponent. Cette fonction prend en paramètre une fonction qui retourne une promesse. Dans notre cas, la fonction retourne une promesse qui importe le composant AsyncComponent.vue.
+
+Pour utiliser le composant asynchrone, il suffit de l'importer et de l'utiliser comme n'importe quel autre composant.
+
+```javascript
+
+    <template>
+        <AsyncComponent />
+    </template>
+
+    <script setup>
+        import { defineAsyncComponent } from 'vue'
+
+        const AsyncComponent = defineAsyncComponent(() =>
+            import('./components/AsyncComponent.vue')
+        )
+    </script>
+
+```
+L'utilisation des composants asynchrones est très utile dans les applications de grande taille. Elle permet de ne charger que les composants nécessaires et d'améliorer ainsi les performances de l'application.
