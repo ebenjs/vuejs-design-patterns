@@ -124,6 +124,73 @@ Le patron provide/inject est très utile dans certains cas. Mais il faut faire a
 
 ## 3- Higher Order Component
 
+Le patron de conception Higher Order Component (HOC) est un patron qui permet de moduler un composant enfant en lui ajoutant des fonctionnalités supplémentaires.
+
+Le HOC promeut la réutilisabilité et la composabilité en permettant la séparation des rôles et un moyen de modifier le comportement d'un composant enfant sans avoir à le modifier directement.
+
+Voyons à présent un exemple simple et basique de l'utilisation du patron de conception HOC.
+
+Imaginons que nous avons un composant qui affiche un message à l'utilisateur. Ce composant est très simple et ne fait que ça. Mais nous voulons ajouter une fonctionnalité qui permet de changer la couleur du message en fonction de la valeur de la prop `message.type`. Pour ce faire, nous allons utiliser le patron HOC.
+
+Voici le code du composant Message.vue:
+
+```javascript
+
+    <template>
+        <div>
+            <p>{{ message }}</p>
+        </div>
+    </template>
+
+    <script setup>
+        import { defineProps } from 'vue';
+
+        const props = defineProps({
+            message: {
+                type: String,
+                required: true
+            }
+        });
+    </script>
+
+    <style scoped>
+        .red-alert {
+            color: red;
+        }
+
+        .green-alert {
+            color: green;
+        }
+    </style>
+
+```
+
+Et voici à quoi pourrait ressembler le code du composant parent (`MessageWrapper.vue`) qui modifie son comportement:
+
+```javascript
+
+    <template>
+        <div>
+            <Message :message="message.text" :class="messageColorCLass" />
+        </div>
+    </template>
+
+    <script setup>
+        import { computed, ref } from 'vue';
+        import Message from './Message.vue';
+
+        const message = ref({ type: 'error', text: 'Hello World!' });
+        const messageColorCLass = computed(() => {
+            return message.type === 'error' ? 'red-alert' : 'green-alert';
+        });
+    </script>
+
+```
+
+Ici MessageWrapper.vue ne modifie que la couleur d'affichage du message en fonction de la valeur de la prop `message.type`. Mais il pourrait très bien modifier d'autres choses comme par exemple rajouter un titre et un bouton au message. Bref vous avez compris le principe.
+
+Le patron HOC est très utile pour ajouter des fonctionnalités à un composant sans avoir à le modifier directement. Il permet de garder le composant enfant simple et de le réutiliser dans d'autres contextes.
+
 ## 4- Async Components
 
 Dans les applications de grande taille, il peut être nécessaire de diviser l'application en petits morceaux et de ne charger un composant du serveur que lorsqu'il est nécessaire. Pour rendre cela possible dans VueJS, nous avons la possibilité de créer des composants asynchrones.
